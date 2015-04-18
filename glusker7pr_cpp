@@ -1,0 +1,99 @@
+#include <iostream>
+#include <cstdlib>
+#include <limits>
+using namespace std;
+
+struct element
+{
+    int pos;
+    int n;
+    element* next;
+};
+
+
+int main ()
+{
+    int minimal;
+    int position = 1;
+    element* list1;
+    element* list2;
+    element* head;
+    element* delptr;
+    int read = 0;
+    char c;
+    cout << "Now we gonna generate list, enter integer values" << endl << "When you want to stop - enter letter" << endl;
+    head = new element();
+    bool err = true;
+    while (err)
+    {
+        cin >> read;
+        if (cin.good())
+        {
+            head->n = read;
+            head->pos = position;
+            err = false;
+        }
+        else
+            {
+                cout << "It's The FIRST element Mister G," << endl << "You shood type right value!" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+    }
+    err = true;
+    while (err)
+    {
+        cin >> read;
+        if (cin.good())
+        {
+            position++;
+            list1 = new element();
+            list1->n = read;
+            list1->pos = position;
+            list1->next = head;
+            head = list1;
+        }
+        else
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Are you shure you want to stop?" << endl << "Y,N?" << endl;
+                cin >> c;
+                if ((c == 'Y')||(c == 'y'))
+                    err = false;
+                else cout << "Continuing" << endl;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+    }
+
+for(list1 = head;list1;list1 = list1->next)
+    {
+        if(list1->pos==1) minimal = list1->n;
+        if(list1->n < minimal) minimal = list1-> n;
+        if((list1->n)%2!=0)
+            {
+                list2 = head;
+                while(list2->next!=list1)
+                list2 = list2->next;
+                list2->next = list1->next;
+                delete list1;
+                list1 = list2;
+            }
+    }
+
+
+    cout << "Минимальный элемент списка = " << minimal << endl;
+    for (list1 = head;list1;list1 = list1->next)
+    {
+        cout << list1->pos << endl;
+        cout << list1->n << endl;
+    }
+/*    tmp = head;
+    while(tmp)
+    {
+        tpp = tmp;
+        tmp = tmp->next;
+        delete tpp;
+    }*/
+}
